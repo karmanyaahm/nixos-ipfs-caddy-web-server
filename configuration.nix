@@ -47,7 +47,7 @@ in {
   networking.hostName = "web-hetzner-servers-malhotra-cc"; # Define your hostname.
   networking = {
     interfaces.enp1s0.ipv6.addresses = [{
-      address = vars.ipv6;
+      address = "2a01:4ff:f0:af40::1";
       prefixLength = 64;
     }];
     defaultGateway6 = {
