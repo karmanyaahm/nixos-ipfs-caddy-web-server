@@ -2,7 +2,7 @@
 
 **TODO** add more details and simplify this, currently this is a braindump with too much going on with too many edge cases
 
-This sets up a NixOS server where you can upload your website to IPFS and then Caddy (with custom plugins) will serve it. This is currently hosting my person website <https://karmanyaah.malhotra.cc> and [UnifiedPush.org](https://unifiedpush.org).
+This sets up a NixOS server where you can upload your website to IPFS and then Caddy (with custom plugins) will serve it. This is currently hosting [my personal website](https://karmanyaah.malhotra.cc) and [UnifiedPush.org](https://unifiedpush.org).
  
 
 Here is an [example GitHub action](https://github.com/UnifiedPush/documentation/blob/main/.github/workflows/main.yml#L39-L66) deploying to this server:
@@ -37,7 +37,7 @@ Here is an [example GitHub action](https://github.com/UnifiedPush/documentation/
 or an example set of bash script(s) deploying to this server:
 
 First connect to the server with `ssh nobody@${1:-mydomain.cc} -L 5001:localhost:5001 -vTN` and to deploy run `JEKYLL_ENV="production" bundle exec jekyll build; DOMAIN="mydomain.cc" DIR="./_site" ./_deploy.sh` with the following `_deploy.sh`:
-```
+```sh
 #!/bin/bash
 
 # If a command fails then the deploy stops
