@@ -26,10 +26,10 @@ let
   });
 
   cacheSrc = srcOnly (fetchFromGitHub {
-    owner = "sillygod";
-    repo = "cdp-cache";
-    rev = "v0.4.6";
-    hash = "sha256-2qVMPGep0mwwBl2igYuBTokrcNp2imALmCQcdhhv58g=";
+    owner = "caddyserver";
+    repo = "cache-handler";
+    rev = "v0.4.0";
+    hash = "sha256-c9SzZh+7S2mXcw9RdmGcg11YyCTMUM/l+Wc/v8uBjnk=";
   });
 
   combinedSrc = stdenv.mkDerivation {
@@ -54,7 +54,7 @@ let
       echo 'import _ "github.com/caddyserver/caddy/v2/modules/standard"' >> main.go
       echo 'import _ "github.com/aksdb/caddy-cgi/v2"' >> main.go
       echo 'import _ "github.com/RussellLuo/caddy-ext/ratelimit"' >> main.go
-      echo 'import _ "github.com/sillygod/cdp-cache"' >> main.go
+      echo 'import _ "github.com/caddyserver/cache-handler"' >> main.go
 
       echo "func main(){ caddycmd.Main() }" >> main.go
 
@@ -64,11 +64,11 @@ let
       go mod edit -require=github.com/aksdb/caddy-cgi/v2@v2.2.0
       go mod edit -replace github.com/aksdb/caddy-cgi/v2=../cgi
 
-      go mod edit -require=github.com/RussellLuo/caddy-ext/ratelimit@v0.0.0
+      go mod edit -require=github.com/RussellLuo/caddy-ext/ratelimit@v0.2.0
       go mod edit -replace github.com/RussellLuo/caddy-ext/ratelimit=../ratelimit
 
-      go mod edit -require=github.com/sillygod/cdp-cache@v0.0.0
-      go mod edit -replace github.com/sillygod/cdp-cache=../cache
+      go mod edit -require=github.com/caddyserver/cache-handler@v0.4.0
+      go mod edit -replace github.com/caddyserver/cache-handler=../cache
     '';
   };
 in
@@ -77,7 +77,7 @@ buildGoModule {
 
   src = combinedSrc;
 
-  vendorHash = "sha256-11T7t3rF3LilkS7P1ad+QUtDzlsZoezTeuD4X6X9SbE=";
+  vendorHash = "sha256-9z2B93ss8tacei+66hZFp8L/flt1QnUKAiTon21Hpfw=";
 
   overrideModAttrs = _: {
     postPatch = "cd caddywithplugins";

@@ -61,6 +61,7 @@ in {
     vim 
     wget
     git
+    htop
   ];
   # for nixos compiling
   services.logind.extraConfig = ''
@@ -74,6 +75,10 @@ in {
     	globalConfig = ''
       		auto_https disable_redirects
        		order cgi last
+		order cache before rewrite
+		cache {
+			ttl 15s
+		}
 	'';
 	email = vars.email;
 	logFormat = mkForce "level INFO\n";
@@ -85,6 +90,8 @@ in {
 		${caddyUpgrade}
 
 		reverse_proxy localhost:8080
+
+		cache
 
 		import /ipns/{host}/config/Caddyfile*
 
