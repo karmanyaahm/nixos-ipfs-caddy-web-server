@@ -132,7 +132,11 @@ in {
     enable = true;
     autoMount = true;
   };
-
+  systemd.services.ipfs.postStop = mkIf config.services.kubo.autoMount ''
+# After an unclean shutdown the fuse mounts at ${config.services.kubo.ipnsMountDir} and ${config.services.kubo.ipfsMountDir} are locked
+umount ${config.services.kubo.ipnsMountDir} || true
+umount ${config.services.kubo.ipfsMountDir} || true
+  '';
 
   networking.firewall.allowedTCPPorts = [ 
 	80 443 # caddy
