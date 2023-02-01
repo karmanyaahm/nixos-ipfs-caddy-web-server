@@ -126,6 +126,11 @@ in {
 
   };
   systemd.services.caddy.serviceConfig.AmbientCapabilities = "CAP_NET_BIND_SERVICE";
+  systemd.services.caddy.serviceConfig = {
+    Restart = mkForce "on-failure";
+    RestartSec = 10;
+    RestartPreventExitStatus = [ 0 1 ];
+  };
 
 
   services.kubo = {
