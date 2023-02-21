@@ -2,14 +2,22 @@
 
 # Copy https://github.com/NixOS/nixpkgs/pull/191883#issuecomment-1250652290
 # & https://github.com/NixOS/nixpkgs/issues/14671
-{ fetchFromGitHub, buildGoModule, stdenv, go,srcOnly }:
+{ fetchFromGitHub, buildGoModule, stdenv, installShellFiles, go, srcOnly }:
 let
+  version = "2.6.2";
   caddySrc = srcOnly (fetchFromGitHub {
     owner = "caddyserver";
     repo = "caddy";
-    rev = "v2.6.2";
+    rev = "v${version}";
     hash = "sha256-Tbf6RB3106OEZGc/Wx7vk+I82Z8/Q3WqnID4f8uZ6z0=";
   });# Clone from https://github.com/caddyserver/caddy
+
+  dist = fetchFromGitHub {
+    owner = "caddyserver";
+    repo = "dist";
+    rev = "v${version}";
+    sha256 = "sha256-EXs+LNb87RWkmSWvs8nZIVqRJMutn+ntR241gqI7CUg=";
+  };
 
   cgiSrc = srcOnly (fetchFromGitHub {
     owner = "aksdb";
@@ -91,6 +99,19 @@ buildGoModule {
       cp go.mod go.sum "$out/.magic"
     '';
   };
+
+  #nativeBuildInputs = [ installShellFiles ];
+  #postInstall = ''
+  #  echo $out
+  #  install -Dm644 ${dist}/init/caddy.service ${dist}/init/caddy-api.service -t $out/lib/systemd/system
+
+  #  substituteInPlace $out/lib/systemd/system/caddy.service --replace "/usr/bin/caddy" "$out/bin/caddy"
+  #  substituteInPlace $out/lib/systemd/system/caddy-api.service --replace "/usr/bin/caddy" "$out/bin/caddy"
+
+  #  installShellCompletion --cmd metal \
+  #    --bash <($out/bin/caddy completion bash) \
+  #    --zsh <($out/bin/caddy completion zsh)
+  #'';
 
   postPatch = "cd caddywithplugins";
 
