@@ -14,18 +14,30 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/10387d2b-2889-4b06-baca-ecefd20d8caf";
+    { device = "/dev/sda";
       fsType = "ext4";
     };
 
-  swapDevices = [ ];
+  swapDevices = [ { device = "/dev/sdb" } ];
+
+
+boot.kernelParams = [ "console=ttyS0,19200n8" ];
+boot.loader.grub.extraConfig = ''
+  serial --speed=19200 --unit=0 --word=8 --parity=no --stop=1;
+  terminal_input serial;
+  terminal_output serial
+'';
+boot.loader.grub.forceInstall = true;
+boot.loader.grub.device = "nodev";
+boot.loader.timeout = 10;
+
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
+  networking.useDHCP = false;
+  networking.interfaces.enp0s5.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

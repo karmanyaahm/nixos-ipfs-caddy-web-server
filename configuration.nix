@@ -46,13 +46,13 @@ in {
 
   networking.hostName = "web-hetzner-servers-malhotra-cc"; # Define your hostname.
   networking = {
-    interfaces.enp1s0.ipv6.addresses = [{
-      address = "2a01:4ff:f0:af40::1";
+    interfaces.enp0s5.ipv6.addresses = [{
+      address = "2600:3c02::f03c:93ff:feb8:2aa6";
       prefixLength = 64;
     }];
     defaultGateway6 = {
       address = "fe80::1";
-      interface = "enp1s0";
+      interface = "enp0s5";
     };
   };
 
@@ -62,6 +62,11 @@ in {
     wget
     git
     htop
+
+#linode
+    inetutils
+    mtr
+    sysstat
   ];
   # for nixos compiling
   services.logind.extraConfig = ''
