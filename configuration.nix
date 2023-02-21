@@ -76,9 +76,9 @@ in {
       		auto_https disable_redirects
        		order cgi last
 		order cache before rewrite
-		cache {
-			ttl 15s
-		}
+		#cache {
+		#	ttl 15s
+		#}
 	'';
 	email = vars.email;
 	logFormat = mkForce "level INFO\n";
@@ -91,7 +91,7 @@ in {
 
 		reverse_proxy localhost:8080
 
-		cache
+		#cache
 
 		import /ipns/{host}/config/Caddyfile*
 
